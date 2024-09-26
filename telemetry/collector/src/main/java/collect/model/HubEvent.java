@@ -32,8 +32,6 @@ import java.time.Instant;
 @ToString
 public abstract class HubEvent {
     @NotNull
-    private String id;
-    @NotNull
     private String hubId;
     private Instant timestamp = Instant.now();
 

@@ -14,6 +14,7 @@ import java.util.List;
 @ToString(callSuper = true)
 public class ScenarioAddedEvent extends HubEvent {
 
+    private String name;
     private List<ScenarioCondition> conditions;
     private List<DeviceAction> actions;
 
