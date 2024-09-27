@@ -1,6 +1,7 @@
 package collect.model.sensor;
 
 import collect.model.SensorEvent;
+import collect.model.SensorEventType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

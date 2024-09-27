@@ -1,4 +1,4 @@
-package collect.model.sensor;
+package collect.model;
 
 public enum SensorEventType {
     LIGHT_SENSOR_EVENT,

@@ -1,6 +1,7 @@
 package collect.model.sensor;
 
 import collect.model.SensorEvent;
+import collect.model.SensorEventType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
