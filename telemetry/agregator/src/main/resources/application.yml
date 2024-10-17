@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8083
 
 spring:
   properties:
@@ -11,5 +11,3 @@ app:
     topic:
       sensors: telemetry.sensors.v1
       hubs: telemetry.hubs.v1
-      snapshots: telemetry.snapshots.v1.
-

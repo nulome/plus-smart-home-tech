@@ -1,10 +1,10 @@
 package grpc.service;
 
-import collect.ControllerCollector;
-import collect.mapper.HubEventMapper;
-import collect.mapper.SensorEventMapper;
-import collect.model.HubEvent;
-import collect.model.SensorEvent;
+import ru.test.ControllerCollector;
+import ru.test.collect.mapper.HubEventMapper;
+import ru.test.collect.mapper.SensorEventMapper;
+import ru.test.collect.model.HubEvent;
+import ru.test.collect.model.SensorEvent;
 import com.google.protobuf.Empty;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
