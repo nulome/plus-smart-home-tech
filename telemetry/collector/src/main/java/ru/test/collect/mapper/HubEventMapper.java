@@ -37,7 +37,6 @@ public abstract class HubEventMapper {
     @Mapping(target = "type", expression = "java(this.getDeviceTypeAvro(addedEvent.getDeviceType()))")
     public abstract DeviceAddedEventAvro toDeviceAddedEventAvro(DeviceAddedEvent addedEvent);
 
-
     DeviceTypeAvro getDeviceTypeAvro(DeviceType type) {
         return DeviceTypeAvro.valueOf(type.name());
     }
