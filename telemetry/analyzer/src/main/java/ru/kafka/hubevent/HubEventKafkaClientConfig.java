@@ -1,4 +1,4 @@
-package ru.test.kafka;
+package ru.kafka.hubevent;
 
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -7,23 +7,26 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.kafka.KafkaClient;
 
 import java.util.Properties;
 
 @Configuration
-public class KafkaClientConfig {
+public class HubEventKafkaClientConfig {
 
     private final String kafkaUrlServer;
 
-    public KafkaClientConfig(@Value("${app.kafka.servers:localhost:9099}") String kafkaUrlServer) {
+    public HubEventKafkaClientConfig(@Value("${app.kafka.servers:localhost:9099}") String kafkaUrlServer) {
         this.kafkaUrlServer = kafkaUrlServer;
     }
 
 
-    @Bean
+    @Bean("hubEventKafka")
+    @Qualifier("hubEventKafka")
     KafkaClient getKafkaClient() {
         return new KafkaClient() {
 
@@ -43,7 +46,7 @@ public class KafkaClientConfig {
                 Properties config = new Properties();
                 config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaUrlServer);
                 config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-                config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "ru.test.kafka.CollectorAvroSerializer");
+                config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 
                 producer = new KafkaProducer<>(config);
             }
@@ -60,7 +63,8 @@ public class KafkaClientConfig {
                 Properties config = new Properties();
                 config.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaUrlServer);
                 config.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-                config.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "ru.test.kafka.CollectorAvroDeserializer");
+                config.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "ru.deserializer.HubEventDeserializer");
+                config.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "consumer-hubevent-1");
 
                 consumer = new KafkaConsumer<>(config);
             }
@@ -77,4 +81,5 @@ public class KafkaClientConfig {
             }
         };
     }
+
 }

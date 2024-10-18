@@ -17,12 +17,6 @@ public class CollectorAvroDeserializer implements Deserializer<SpecificRecordBas
                 BinaryDecoder decoder = decoderFactory.binaryDecoder(bytes, null);
                 DatumReader<SpecificRecordBase> reader;
 
-//                switch (topic) {
-//                    default:
-//                        throw new IllegalArgumentException("Неизвестный топик: " + topic);
-//                }
-//
-//                return reader.read(null, decoder);
             }
             return null;
         } catch (Exception e) {

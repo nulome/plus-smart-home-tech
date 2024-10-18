@@ -16,10 +16,10 @@ import java.util.Properties;
 @Configuration
 public class KafkaClientConfig {
 
-    private final String topicSensors;
+    private final String kafkaUrlServer;
 
-    public KafkaClientConfig(@Value("${app.kafka.servers:localhost:9099}") String topicSensors) {
-        this.topicSensors = topicSensors;
+    public KafkaClientConfig(@Value("${app.kafka.servers:localhost:9099}") String kafkaUrlServer) {
+        this.kafkaUrlServer = kafkaUrlServer;
     }
 
 
@@ -41,7 +41,7 @@ public class KafkaClientConfig {
 
             private void initProducer() {
                 Properties config = new Properties();
-                config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, topicSensors);
+                config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaUrlServer);
                 config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
                 config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "ru.aggregator.kafka.AggregatorAvroSerializer");
 
@@ -58,7 +58,7 @@ public class KafkaClientConfig {
 
             private void initConsumer() {
                 Properties config = new Properties();
-                config.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, topicSensors);
+                config.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaUrlServer);
                 config.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
                 config.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "ru.aggregator.deserializer.SensorEventDeserializer");
                 config.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "consumer-service-1");
