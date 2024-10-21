@@ -1,0 +1,26 @@
+server:
+  port: ${AGGREGATOR_PORT:8083}
+
+spring:
+  properties:
+  sql.init.mode: always
+
+app:
+  kafka:
+    consume.attempt.timeout: 10000
+    servers: ${KAFKA_URL:localhost:9092}
+    topic:
+      sensors: telemetry.sensors.v1
+      hubs: telemetry.hubs.v1
+      snapshots: telemetry.snapshots.v1
+
+
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: TRACE
+          jpa.JpaTransactionManager: DEBUG
+          transaction: INFO
+          transaction.interceptor: TRACE
