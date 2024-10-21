@@ -11,4 +11,5 @@ public interface KafkaClient {
     Consumer<String, SpecificRecordBase> getConsumer();
 
     void stop();
+
 } 

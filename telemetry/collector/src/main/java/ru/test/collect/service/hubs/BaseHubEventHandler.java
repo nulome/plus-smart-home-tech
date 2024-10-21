@@ -29,7 +29,7 @@ public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implemen
         eventAvro.setTimestamp(event.getTimestamp());
         eventAvro.setPayload(payload);
 
-        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(topics.topicHubs, eventAvro);
+        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(topics.getTopicHubs(), eventAvro);
         kafkaClient.getProducer().send(record);
     }
 }

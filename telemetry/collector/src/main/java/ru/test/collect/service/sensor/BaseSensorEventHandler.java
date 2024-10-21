@@ -26,7 +26,7 @@ public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> imple
         eventAvro.setTimestamp(event.getTimestamp());
         eventAvro.setPayload(sensor);
 
-        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(topics.topicSensors, eventAvro);
+        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(topics.getTopicSensors(), eventAvro);
         kafkaClient.getProducer().send(record);
     }
 }

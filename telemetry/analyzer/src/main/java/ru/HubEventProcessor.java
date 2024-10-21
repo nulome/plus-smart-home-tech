@@ -6,50 +6,51 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.errors.WakeupException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.kafka.KafkaClient;
-import ru.kafka.hubevent.HubEnetTopics;
-import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
+import ru.kafka.hubevent.HubEventTopics;
+import ru.repository.ActionRepository;
+import ru.repository.model.Action;
+import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Component
 public class HubEventProcessor implements Runnable {
 
-    private static final Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofMillis(10000);
+    private final Duration consumeAttemptTimeout;
+    private final HubEventTopics topics;
+    private final ActionRepository actionRepository;
+    private final Consumer<String, SpecificRecordBase> consumer;
 
-    private static final Map<String, SensorsSnapshotAvro> snapshots = new HashMap<>();
-
-    @Autowired
-    private HubEnetTopics topics;
-
-    @Autowired
-    @Qualifier("hubEventKafka")
-    private KafkaClient kafkaClient;
-
+    public HubEventProcessor(@Value("${app.kafka.consume.attempt.timeout:10000}") Duration consumeAttemptTimeout,
+                             HubEventTopics topics, KafkaClient hubEventKafka, ActionRepository actionRepository) {
+        this.consumeAttemptTimeout = consumeAttemptTimeout;
+        this.topics = topics;
+        this.actionRepository = actionRepository;
+        this.consumer = hubEventKafka.getConsumer();
+    }
 
     @Override
     public void run() {
-        Consumer<String, SpecificRecordBase> consumer = kafkaClient.getConsumer();
 
         try {
-            consumer.subscribe(List.of(topics.topicHubs));
+            consumer.subscribe(List.of(topics.getTopicHubs()));
 
             while (true) {
-                ConsumerRecords<String, SpecificRecordBase> records = consumer.poll(CONSUME_ATTEMPT_TIMEOUT);
+                ConsumerRecords<String, SpecificRecordBase> records = consumer.poll(consumeAttemptTimeout);
                 for (ConsumerRecord<String, SpecificRecordBase> record : records) {
-                    System.out.printf("topic = %s, offset = %d, value = %s%n", record.topic(), record.offset(), record.value());
+                    log.info("topic = {}, offset = {}, value = {}", record.topic(), record.offset(), record.value());
+                    HubEventAvro hubEventAvro = (HubEventAvro) record.value();
+                    saveEvent(hubEventAvro);
                 }
             }
 
         } catch (WakeupException ignored) {
-
+            log.debug("Исключение WakeupException.");
         } catch (Exception e) {
             log.error("Ошибка во время обработки событий от датчиков", e);
         } finally {
@@ -57,11 +58,18 @@ public class HubEventProcessor implements Runnable {
             try {
                 consumer.poll(Duration.ofMinutes(5));
             } catch (WakeupException e) {
-
+                log.debug("Исключение WakeupException.");
             } finally {
                 log.info("Закрываем консьюмер");
                 consumer.close();
             }
         }
     }
+
+    private void saveEvent(HubEventAvro hubEventAvro) {
+        Action action = new Action();
+        action.setType(hubEventAvro.getHubId());
+        actionRepository.save(action);
+    }
+
 }

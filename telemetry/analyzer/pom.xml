@@ -16,20 +16,31 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <plus.smart.home.schemas.ver>1.0-SNAPSHOT</plus.smart.home.schemas.ver>
     </properties>
 
     <dependencies>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>ru.yandex.practicum</groupId>
+            <artifactId>avro-schemas</artifactId>
+            <version>${plus.smart.home.schemas.ver}</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.yandex.practicum</groupId>
+            <artifactId>proto-schemas</artifactId>
+            <version>${plus.smart.home.schemas.ver}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -42,12 +53,6 @@
         </dependency>
 
         <dependency>
-            <groupId>ru.yandex.practicum</groupId>
-            <artifactId>avro-schemas</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
@@ -56,26 +61,16 @@
         <dependency>
             <groupId>net.devh</groupId>
             <artifactId>grpc-client-spring-boot-starter</artifactId>
-            <version>3.1.0.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>net.devh</groupId>
             <artifactId>grpc-server-spring-boot-starter</artifactId>
-            <version>3.1.0.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.17.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>ru.yandex.practicum</groupId>
-            <artifactId>proto-schemas</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
 
     </dependencies>

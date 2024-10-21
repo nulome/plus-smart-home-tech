@@ -20,7 +20,7 @@ public class CollectorAvroDeserializer implements Deserializer<SpecificRecordBas
             }
             return null;
         } catch (Exception e) {
-            throw new SerializationException("Ошибка десереализации данных из топика [" + topic + "]", e);
+            throw new SerializationException("Ошибка десериализации данных из топика [" + topic + "]", e);
         }
     }
 }

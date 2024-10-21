@@ -18,7 +18,7 @@ public class KafkaClientConfig {
 
     private final String kafkaUrlServer;
 
-    public KafkaClientConfig(@Value("${app.kafka.servers:localhost:9099}") String kafkaUrlServer) {
+    public KafkaClientConfig(@Value("${app.kafka.servers}") String kafkaUrlServer) {
         this.kafkaUrlServer = kafkaUrlServer;
     }
 

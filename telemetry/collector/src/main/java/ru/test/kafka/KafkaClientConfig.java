@@ -18,7 +18,7 @@ public class KafkaClientConfig {
 
     private final String kafkaUrlServer;
 
-    public KafkaClientConfig(@Value("${app.kafka.servers:localhost:9099}") String kafkaUrlServer) {
+    public KafkaClientConfig(@Value("${app.kafka.servers}") String kafkaUrlServer) {
         this.kafkaUrlServer = kafkaUrlServer;
     }
 
@@ -61,6 +61,7 @@ public class KafkaClientConfig {
                 config.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaUrlServer);
                 config.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
                 config.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "ru.test.kafka.CollectorAvroDeserializer");
+                config.setProperty(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 
                 consumer = new KafkaConsumer<>(config);
             }
